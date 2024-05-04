@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColorPicker from "./ColorPicker";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const localMode = localStorage.getItem("mode");
+    if (localMode == null) return false;
+    return JSON.parse(localMode);
+  });
+
+  useEffect(() => {
+    localStorage.setItem("mode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   function toggleDarkMode() {
     setDarkMode(!darkMode);
