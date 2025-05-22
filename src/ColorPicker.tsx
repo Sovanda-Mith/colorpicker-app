@@ -6,8 +6,7 @@ type Color = string;
 function ColorPicker() {
   const [color, setColor] = useState<Color>(() => {
     const localColor = localStorage.getItem("color");
-    if (localColor == null) return "#555555";
-    return JSON.parse(localColor as Color);
+    return localColor ? JSON.parse(localColor) : "#555555";
   });
 
   useEffect(() => {
@@ -19,28 +18,33 @@ function ColorPicker() {
   };
 
   return (
-    <main className="dark:bg-neutral-900 h-screen">
-      <div className="font-bold text-5xl mb-10 ml-5" style={{ color: color }}>
-        Color Picker
-      </div>
-      <div className="w-full flex justify-center my-4">
-        <div className="w-64 h-64" style={{ backgroundColor: color }}></div>
-      </div>
-      <div className="w-full flex justify-center mb-3 font-bold text-lg">
-        <h2 style={{ color: color }}>{color}</h2>
-      </div>
-      <div className="w-full flex justify-center">
-        <label className="dark:text-white text-xl" htmlFor="color-picker">
-          Choose a color to display
-        </label>
-        <input
-          name="color-picker"
-          className="mx-4"
-          type="color"
-          id="color-picker"
-          value={color}
-          onChange={handleChange}
+    <main className="min-h-screen flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white transition-colors duration-300">
+      <div className="bg-white dark:bg-neutral-800 p-8 rounded-2xl shadow-2xl w-[22rem] flex flex-col items-center space-y-6 transition-all duration-300">
+        <h1 className="text-4xl font-bold" style={{ color }}>
+          🎨 Color Picker
+        </h1>
+
+        <div
+          className="w-40 h-40 rounded-full shadow-md border-4 transition-all duration-300"
+          style={{ backgroundColor: color }}
         />
+
+        <h2 className="text-lg font-semibold" style={{ color }}>
+          {color}
+        </h2>
+
+        <div className="flex flex-col items-center space-y-2 w-full">
+          <label htmlFor="color-picker" className="text-lg">
+            Choose your color
+          </label>
+          <input
+            id="color-picker"
+            type="color"
+            value={color}
+            onChange={handleChange}
+            className="w-20 h-10 rounded-lg border-none cursor-pointer transition-transform duration-300 hover:scale-105"
+          />
+        </div>
       </div>
     </main>
   );
